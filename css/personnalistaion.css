@@ -1,0 +1,22 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+  }
+  #canvas-container {
+    margin: 20px auto;
+    border: 2px dashed #ccc;
+    width: 400px;
+    height: 400px;
+  }
+  canvas {
+    border: 1px solid #333;
+  }
+  .controls {
+    margin-top: 20px;
+  }
+  .controls input, .controls button {
+    margin: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+  }

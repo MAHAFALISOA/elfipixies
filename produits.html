@@ -1,0 +1,54 @@
+<!-- produits.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Produits - CachetNum</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h1 id="titre-produit">Produits</h1>
+<div class="container">
+  <div id="produits-list" class="row"></div>
+</div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const type = params.get("type");
+
+  document.getElementById("titre-produit").textContent = "Cachets " + type;
+
+  const produits = [
+    { nom: "Tampon " + type + " A", image: "https://via.placeholder.com/150", id: 1 },
+    { nom: "Tampon " + type + " B", image: "https://via.placeholder.com/150", id: 2 },
+  ];
+
+  produits.forEach(produit => {
+    const card = `
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <img src="${produit.image}" class="card-img-top">
+          <div class="card-body text-center">
+            <h5>${produit.nom}</h5>
+            <button class="btn btn-primary" onclick="commander()">Commander</button>
+          </div>
+        </div>
+      </div>
+    `;
+    document.getElementById("produits-list").innerHTML += card;
+  });
+
+  function commander() {
+    const isConnected = localStorage.getItem("user_email") !== null;
+    if (isConnected) {
+      window.location.href = "personnalisation.html";
+    } else {
+      sessionStorage.setItem("from_command", "true");
+      window.location.href = "login.html";
+    }
+  }
+</script>
+
+</body>
+</html>

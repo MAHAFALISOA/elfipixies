@@ -1,0 +1,15 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 40px;
+    text-align: center;
+  }
+  #user-info {
+    margin-top: 20px;
+    display: none;
+  }
+  .profile-pic {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+  }

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Personnalisation du Cachet</title>
+
+  <link rel="stylesheet" href="css/personnalistaion.css">
+
+  <!-- Fabric.js pour le dessin -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.2.4/fabric.min.js"></script>
+
+  <!-- EmailJS (version classique) -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+  <script type="text/javascript">
+    emailjs.init("IProCEp7jXTLwdhHd"); // Ta clé publique
+  </script>
+
+  <script>
+    const email = localStorage.getItem("user_email");
+      if (!email) {
+        window.location.href = "login.html";
+      }
+  </script>
+
+
+</head>
+<body>
+
+  <h1>Personnalisez votre Cachet</h1>
+
+  <div id="canvas-container">
+    <p id="welcome-message"></p>
+    <canvas id="canvas" width="400" height="400"></canvas>
+  </div>
+
+  <div class="controls">
+    <input type="text" id="text" placeholder="Entrez votre texte">
+    <button onclick="addText()">Ajouter Texte</button>
+    <button onclick="clearCanvas()">Tout Effacer</button>
+    <button onclick="sendDesign()">Envoyer la commande</button>
+  </div>
+
+  <script>
+    const canvas = new fabric.Canvas('canvas');
+
+    function addText() {
+      const input = document.getElementById("text").value;
+      if (!input) return;
+      const text = new fabric.Text(input, {
+        left: 100,
+        top: 100,
+        fill: '#000',
+        fontSize: 24
+      });
+      canvas.add(text);
+    }
+
+    function clearCanvas() {
+      canvas.clear();
+    }
+
+    function sendDesign() {
+      const imageData = canvas.toDataURL("image/png");
+
+      emailjs.send("service_f87q1ia", "template_n9u0shk", {
+        message: imageData
+      })
+      .then(function(response) {
+        alert("Commande envoyée avec succès !");
+      }, function(error) {
+        alert("Erreur lors de l’envoi : " + error.text);
+      });
+    }
+  </script>
+
+</body>
+</html>
