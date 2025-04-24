@@ -16,12 +16,6 @@
     emailjs.init("IProCEp7jXTLwdhHd"); // Ta clé publique
   </script>
 
-  <script>
-    const email = localStorage.getItem("user_email");
-      if (!email) {
-        window.location.href = "login.html";
-      }
-  </script>
 
 
 </head>
@@ -43,7 +37,8 @@
 
   <script>
     const canvas = new fabric.Canvas('canvas');
-
+    const email = localStorage.getItem("user_email"); // Récupérer l'e-mail de l'utilisateur
+  
     function addText() {
       const input = document.getElementById("text").value;
       if (!input) return;
@@ -55,16 +50,19 @@
       });
       canvas.add(text);
     }
-
+  
     function clearCanvas() {
       canvas.clear();
     }
-
+  
     function sendDesign() {
       const imageData = canvas.toDataURL("image/png");
-
+  
+      // Envoyer l'e-mail avec EmailJS, incluant l'e-mail de l'utilisateur
       emailjs.send("service_f87q1ia", "template_n9u0shk", {
-        message: imageData
+        message: imageData,
+        user_email: email, // Ajouter l'e-mail de l'utilisateur comme paramètre
+        user_name: localStorage.getItem("user_name") // (Facultatif) Ajouter le nom de l'utilisateur
       })
       .then(function(response) {
         alert("Commande envoyée avec succès !");
