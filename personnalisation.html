@@ -89,21 +89,25 @@
         const response = await fetch("https://api.imgur.com/3/image", {
           method: "POST",
           headers: {
-            Authorization: "fc59076abe9c8cf", // Remplace par ton Client ID Imgur
+            Authorization: "Client-ID ton-client-id", // Remplace par ton Client ID Imgur
           },
           body: formData,
         });
 
+        if (!response.ok) {
+          throw new Error(`Erreur HTTP : ${response.status} ${response.statusText}`);
+        }
+
         const result = await response.json();
-        if (!result.success) {
-          throw new Error("Erreur lors de l'upload sur Imgur : " + result.data.error);
+        if (!result.success || !result.data || !result.data.link) {
+          throw new Error("Erreur lors de l'upload sur Imgur : " + (result.data?.error || "Réponse inattendue"));
         }
 
         const imageUrl = result.data.link;
 
         // Envoyer l'e-mail avec EmailJS, incluant l'URL de l'image
         emailjs.send("service_f87q1ia", "template_n9u0shk", {
-          image_url: imageUrl, // Nouvelle variable pour l'URL de l'image
+          image_url: imageUrl,
           user_email: email,
           user_name: userName
         })
