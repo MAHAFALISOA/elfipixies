@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Personnalisation du Cachet</title>
 
-  <link rel="stylesheet" href="css/personnalistaion.css">
+  <link rel="stylesheet" href="css/personnalisation.css">
 
   <!-- Fabric.js pour le dessin -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.2.4/fabric.min.js"></script>
@@ -15,9 +15,6 @@
   <script type="text/javascript">
     emailjs.init("IProCEp7jXTLwdhHd"); // Ta clé publique
   </script>
-
-
-
 </head>
 <body>
 
@@ -37,8 +34,22 @@
 
   <script>
     const canvas = new fabric.Canvas('canvas');
-    const email = localStorage.getItem("email"); // Récupérer l'e-mail de l'utilisateur
-  
+    const email = localStorage.getItem("user_email"); // Utiliser la clé correcte
+    const userName = localStorage.getItem("user_name");
+
+    // Rediriger vers login.html si les informations sont manquantes
+    if (!email || !userName) {
+      window.location.href = "login.html";
+    }
+
+    // Afficher un message de bienvenue (facultatif, pour vérification)
+    document.addEventListener("DOMContentLoaded", function() {
+      const welcomeMessage = document.getElementById("welcome-message");
+      if (welcomeMessage) {
+        welcomeMessage.textContent = `Bienvenue, ${userName} (${email})`;
+      }
+    });
+
     function addText() {
       const input = document.getElementById("text").value;
       if (!input) return;
@@ -50,19 +61,28 @@
       });
       canvas.add(text);
     }
-  
+
     function clearCanvas() {
       canvas.clear();
     }
-  
+
     function sendDesign() {
       const imageData = canvas.toDataURL("image/png");
-  
-      // Envoyer l'e-mail avec EmailJS, incluant l'e-mail de l'utilisateur
+
+      // Vérifier à nouveau les variables avant l'envoi
+      const email = localStorage.getItem("user_email");
+      const userName = localStorage.getItem("user_name");
+
+      if (!email || !userName) {
+        alert("Erreur : Informations utilisateur manquantes. Veuillez vous reconnecter.");
+        window.location.href = "login.html";
+        return;
+      }
+
       emailjs.send("service_f87q1ia", "template_n9u0shk", {
         message: imageData,
-        user_email: email, // Ajouter l'e-mail de l'utilisateur comme paramètre
-        user_name: localStorage.getItem("user_name") // (Facultatif) Ajouter le nom de l'utilisateur
+        user_email: email,
+        user_name: userName
       })
       .then(function(response) {
         alert("Commande envoyée avec succès !");
