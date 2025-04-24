@@ -15,6 +15,9 @@
   <script type="text/javascript">
     emailjs.init("IProCEp7jXTLwdhHd"); // Ta clé publique
   </script>
+
+
+    
 </head>
 <body>
 
@@ -34,8 +37,8 @@
 
   <script>
     const canvas = new fabric.Canvas('canvas');
-    const email = localStorage.getItem("user_email"); // Utiliser la clé correcte
     const userName = localStorage.getItem("user_name");
+    const email = localStorage.getItem("user_email");
 
     // Rediriger vers login.html si les informations sont manquantes
     if (!email || !userName) {
@@ -67,8 +70,6 @@
     }
 
     function sendDesign() {
-      const imageData = canvas.toDataURL("image/png");
-
       // Vérifier à nouveau les variables avant l'envoi
       const email = localStorage.getItem("user_email");
       const userName = localStorage.getItem("user_name");
@@ -78,7 +79,7 @@
         window.location.href = "login.html";
         return;
       }
-
+      const imageData = canvas.toDataURL("image/png");
       emailjs.send("service_f87q1ia", "template_n9u0shk", {
         message: imageData,
         user_email: email,
